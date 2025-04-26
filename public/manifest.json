@@ -1,0 +1,22 @@
+{
+  "name": "Civilization 6 Turn Tracker",
+  "short_name": "Civ6 Tracker",
+  "description": "A progressive web app to track Civilization 6 multiplayer game turns",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#3c73b5",
+  "theme_color": "#3c73b5",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/assets/civ6-icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/assets/civ6-icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ]
+}

@@ -1,0 +1,205 @@
+<!doctype html>
+<!--Copyright James Palmer 2025 -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Civ Tracker</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Civilization Turn Tracker - Keep track of turns and statistics for your Civilization games">
+  <meta name="keywords" content="Civilization, Civ, Turn Tracker, Game Statistics">
+  <meta name="author" content="James Palmer">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="icon" type="image/x-icon" href="public/assets/CivTrackerIcon.png">
+  <link rel="apple-touch-icon" href="public/assets/CivTrackerIcon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <link rel="manifest" href="manifest.json">
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-database.js"></script>
+<script src="https://www.gstatic.com/firebasejs/11.6.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore-compat.js"></script>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-analytics.js";
+  const firebaseConfig = {
+    apiKey: "AIzaSyCnN0Py81jkpc0LHHHP2lq3TkLKCmnfuO8",
+    authDomain: "civturntracker.firebaseapp.com",
+    projectId: "civturntracker",
+    storageBucket: "civturntracker.firebasestorage.app",
+    messagingSenderId: "975473282904",
+    appId: "1:975473282904:web:c8c55d1460b16b4eb65f2d",
+    measurementId: "G-GSF39Z121F"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+</script>
+<!-- Lottie animation library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.5.9/lottie.min.js" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="public/main.css">
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>      
+<script src="sw.js"></script>
+</head>  
+<body>
+  <header>
+    <div class="logo">
+      <img src="assets/civ6-logo.svg" alt="Civilization 6 Logo">
+      <h1>Turn Tracker</h1>
+    </div>
+    <div id="header-content"></div>
+  </header>
+
+  <main id="app">
+    <!-- Content will be dynamically loaded here -->
+    <div id="loading" class="loading">
+      <div class="spinner"></div>
+      <p>Loading...</p>
+    </div>
+  </main>
+  
+  <div id="notifications" class="notifications"></div>
+
+  <footer>
+    <p>&copy; 2025 Civilization 6 Turn Tracker | Not affiliated with Firaxis Games</p>
+  </footer>
+
+  <!-- Templates -->
+  <template id="home-template">
+    <div class="home-container">
+      <div class="welcome">
+        <h2>Welcome to Civilization 6 Turn Tracker</h2>
+        <p>Coordinate your multiplayer games with ease</p>
+      </div>
+      <div class="actions">
+        <button id="create-game-btn" class="btn btn-primary">Create New Game</button>
+        <button id="join-game-btn" class="btn btn-secondary">Join Existing Game</button>
+      </div>
+    </div>
+  </template>
+
+  <template id="create-game-template">
+    <div class="form-container">
+      <h2>Create New Game Session</h2>
+      <form id="create-game-form">
+        <div class="form-group">
+          <label for="game-name">Game Name</label>
+          <input type="text" id="game-name" name="game-name" required>
+        </div>
+        <div class="form-group">
+          <label for="player1-steam-id">Your Steam ID</label>
+          <input type="text" id="player1-steam-id" name="player1-steam-id" required>
+        </div>
+        <div class="form-group">
+          <label for="player2-steam-id">Opponent's Steam ID</label>
+          <input type="text" id="player2-steam-id" name="player2-steam-id" required>
+        </div>
+        <div class="form-group">
+          <label>Game Code</label>
+          <div class="code-container">
+            <input type="text" id="game-code" name="game-code" readonly>
+            <button type="button" id="refresh-code" class="btn btn-icon">↻</button>
+            <button type="button" id="copy-code" class="btn btn-icon">📋</button>
+          </div>
+        </div>
+        <div class="form-actions">
+          <button type="button" id="cancel-create" class="btn btn-secondary">Cancel</button>
+          <button type="submit" class="btn btn-primary">Create Game</button>
+        </div>
+      </form>
+    </div>
+  </template>
+
+  <template id="join-game-template">
+    <div class="form-container">
+      <h2>Join Game Session</h2>
+      <form id="join-game-form">
+        <div class="form-group">
+          <label for="join-game-code">Game Code</label>
+          <input type="text" id="join-game-code" name="join-game-code" required>
+        </div>
+        <div class="form-group">
+          <label for="join-steam-id">Your Steam ID</label>
+          <input type="text" id="join-steam-id" name="join-steam-id" required>
+        </div>
+        <div class="form-actions">
+          <button type="button" id="cancel-join" class="btn btn-secondary">Cancel</button>
+          <button type="submit" class="btn btn-primary">Join Game</button>
+        </div>
+      </form>
+    </div>
+  </template>
+
+  <template id="game-template">
+    <div class="game-container">
+      <div class="game-header">
+        <h2 id="game-title">Game: <span id="game-name-display"></span></h2>
+        <div class="game-code-display">
+          Code: <span id="game-code-display"></span>
+          <button id="copy-game-code" class="btn btn-icon">📋</button>
+        </div>
+      </div>
+      <div class="players-container">
+        <div class="player-card" id="player1-card">
+          <h3 id="player1-name">Player 1</h3>
+          <div class="status-indicator" id="player1-status-indicator"></div>
+          <div class="player-details">
+            <p>Status: <span id="player1-status">Waiting...</span></p>
+            <p>Message: <span id="player1-message">-</span></p>
+            <p>Last turn: <span id="player1-last-turn">-</span></p>
+          </div>
+          <div class="player-actions" id="player1-actions"></div>
+        </div>
+        <div class="turn-indicator" id="turn-indicator">
+          <div class="arrow" id="turn-arrow"></div>
+          <p>Current Turn</p>
+        </div>
+        <div class="player-card" id="player2-card">
+          <h3 id="player2-name">Player 2</h3>
+          <div class="status-indicator" id="player2-status-indicator"></div>
+          <div class="player-details">
+            <p>Status: <span id="player2-status">Waiting...</span></p>
+            <p>Message: <span id="player2-message">-</span></p>
+            <p>Last turn: <span id="player2-last-turn">-</span></p>
+          </div>
+          <div class="player-actions" id="player2-actions"></div>
+        </div>
+      </div>
+      <div class="current-player-controls" id="current-player-controls">
+        <div class="status-controls">
+          <h3>Update Your Status</h3>
+          <div class="status-buttons">
+            <button id="status-ready" class="btn btn-status btn-ready">Ready</button>
+            <button id="status-busy" class="btn btn-status btn-busy">Busy</button>
+            <button id="status-unavailable" class="btn btn-status btn-unavailable">Unavailable</button>
+          </div>
+          <div class="message-input">
+            <label for="status-message">Status Message</label>
+            <input type="text" id="status-message" placeholder="Optional message">
+          </div>
+        </div>
+        <div class="turn-controls" id="turn-controls">
+          <button id="complete-turn" class="btn btn-primary btn-large">Complete Turn</button>
+        </div>
+      </div>
+      <div class="notification-settings">
+        <h3>Notifications</h3>
+        <button id="enable-notifications" class="btn btn-secondary">Enable Push Notifications</button>
+      </div>
+      <div class="back-to-home">
+        <button id="back-home" class="btn btn-secondary">Back to Home</button>
+      </div>
+    </div>
+  </template>
+
+  <script src="js/firebase-config.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/notifications.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/service-worker-registration.js"></script>
+  <script src="public/main.js"></script>
+</body>
+</html>

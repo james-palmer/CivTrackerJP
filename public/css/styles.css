@@ -1,0 +1,479 @@
+/* Base styles and reset */
+:root {
+  --primary-color: #3c73b5;
+  --secondary-color: #e25d33;
+  --background-color: #f5f5f5;
+  --card-background: #ffffff;
+  --text-color: #333333;
+  --border-color: #dddddd;
+  --success-color: #4caf50;
+  --warning-color: #ff9800;
+  --danger-color: #f44336;
+  --shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --transition: all 0.3s ease;
+  --max-width: 1200px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+  color: var(--text-color);
+  background-color: var(--background-color);
+  background-image: url('../assets/background.svg');
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center;
+  position: relative;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: -1;
+}
+
+/* Layout */
+header {
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: var(--shadow);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo img {
+  height: 40px;
+  margin-right: 15px;
+}
+
+.logo h1 {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+main {
+  min-height: calc(100vh - 150px);
+  padding: 2rem;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  position: relative;
+}
+
+footer {
+  text-align: center;
+  padding: 1rem;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  font-size: 0.8rem;
+}
+
+/* Components */
+.btn {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: var(--transition);
+  text-align: center;
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #2a5a96;
+}
+
+.btn-secondary {
+  background-color: var(--secondary-color);
+  color: white;
+}
+
+.btn-secondary:hover {
+  background-color: #c84a23;
+}
+
+.btn-icon {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+}
+
+.btn-large {
+  padding: 0.75rem 1.5rem;
+  font-size: 1.1rem;
+}
+
+.btn-status {
+  padding: 0.4rem 0.8rem;
+  margin-right: 0.5rem;
+}
+
+.btn-ready {
+  background-color: var(--success-color);
+  color: white;
+}
+
+.btn-busy {
+  background-color: var(--warning-color);
+  color: white;
+}
+
+.btn-unavailable {
+  background-color: var(--danger-color);
+  color: white;
+}
+
+.form-container {
+  background-color: var(--card-background);
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2rem;
+}
+
+.code-container {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.code-container input {
+  flex: 1;
+}
+
+/* Home page */
+.home-container {
+  text-align: center;
+  color: white;
+  padding: 2rem;
+}
+
+.welcome {
+  margin-bottom: 3rem;
+}
+
+.welcome h2 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.welcome p {
+  font-size: 1.2rem;
+  max-width: 600px;
+  margin: 0 auto;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.actions button {
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+}
+
+/* Game page */
+.game-container {
+  background-color: var(--card-background);
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+}
+
+.game-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 1rem;
+}
+
+.game-code-display {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+}
+
+.players-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.player-card {
+  flex: 1;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  padding: 1.5rem;
+  position: relative;
+  border: 1px solid var(--border-color);
+}
+
+.player-card h3 {
+  margin-bottom: 1rem;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 0.5rem;
+}
+
+.status-indicator {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background-color: #999;
+}
+
+.status-indicator.ready {
+  background-color: var(--success-color);
+}
+
+.status-indicator.busy {
+  background-color: var(--warning-color);
+}
+
+.status-indicator.unavailable {
+  background-color: var(--danger-color);
+}
+
+.player-details p {
+  margin-bottom: 0.5rem;
+}
+
+.player-actions {
+  margin-top: 1rem;
+}
+
+.turn-indicator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.arrow {
+  width: 0;
+  height: 0;
+  border-top: 15px solid transparent;
+  border-bottom: 15px solid transparent;
+  border-left: 25px solid var(--primary-color);
+  margin-bottom: 0.5rem;
+  transition: var(--transition);
+}
+
+.arrow.left {
+  transform: rotate(180deg);
+}
+
+.current-player-controls {
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  border: 1px solid var(--border-color);
+}
+
+.status-controls {
+  margin-bottom: 2rem;
+}
+
+.status-controls h3 {
+  margin-bottom: 1rem;
+}
+
+.status-buttons {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.message-input {
+  margin-top: 1rem;
+}
+
+.message-input input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.turn-controls {
+  text-align: center;
+  padding: 1rem 0;
+}
+
+.notification-settings, .back-to-home {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+/* Notifications */
+.notifications {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 100;
+  max-width: 300px;
+}
+
+.notification {
+  background-color: var(--card-background);
+  border-left: 4px solid var(--primary-color);
+  box-shadow: var(--shadow);
+  padding: 1rem;
+  margin-bottom: 0.5rem;
+  border-radius: 4px;
+  transition: var(--transition);
+  animation: slideIn 0.3s ease;
+}
+
+.notification.success {
+  border-left-color: var(--success-color);
+}
+
+.notification.warning {
+  border-left-color: var(--warning-color);
+}
+
+.notification.error {
+  border-left-color: var(--danger-color);
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Loading */
+.loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 300px;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 5px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: var(--primary-color);
+  animation: spin 1s ease-in-out infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  header {
+    padding: 0.8rem;
+  }
+  
+  .logo img {
+    height: 30px;
+  }
+  
+  .logo h1 {
+    font-size: 1.2rem;
+  }
+  
+  main {
+    padding: 1rem;
+  }
+  
+  .form-container {
+    padding: 1.5rem;
+  }
+  
+  .players-container {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .turn-indicator {
+    transform: rotate(90deg);
+    margin: 1rem 0;
+  }
+  
+  .welcome h2 {
+    font-size: 2rem;
+  }
+  
+  .actions {
+    flex-direction: column;
+  }
+}
